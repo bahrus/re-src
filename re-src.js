@@ -1,5 +1,28 @@
 import { XtalDecor } from 'xtal-decor/xtal-decor.js';
 import { define } from 'xtal-element/XtalElement.js';
+export function updateHash(key, val) {
+    const splitHash = location.hash.split(':~:');
+    let hashChanged = false;
+    let foundKey = false;
+    splitHash.forEach((hash, idx) => {
+        const splitEq = hash.split('=');
+        if (splitEq.length === 2 && splitEq[0] === key) {
+            foundKey = true;
+            if (splitEq[1] !== val) {
+                hashChanged = true;
+                splitEq[1] = val;
+                const newHash = splitEq.join('=');
+                splitHash[idx] = newHash;
+            }
+        }
+    });
+    if (hashChanged) {
+        location.hash = splitHash.join(':~:');
+    }
+    else if (!foundKey) {
+        location.hash += `:~:${key}=${val}`;
+    }
+}
 export class ReSrc extends XtalDecor {
     constructor() {
         super(...arguments);
@@ -17,13 +40,11 @@ export class ReSrc extends XtalDecor {
                 let root = this.getRootNode();
                 const iframe = root.querySelector(`iframe[name="${target.target}"]`);
                 if (iframe !== null) {
-                    debugger;
+                    updateHash(target.target, target.getAttribute('href'));
                 }
             }
         };
-        this.init = (h) => {
-            debugger;
-        };
+        this.init = (h) => { };
     }
 }
 ReSrc.is = 're-src';
