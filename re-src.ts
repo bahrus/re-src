@@ -7,9 +7,23 @@ export class ReSrc extends XtalDecor {
     ifWantsToBe = 'persistable';
     actions = [];
     upgrade = 'nav';
+    _lastTimeStamp = 0;
 
     capture = {
-        click: ({self})
+        click: ({self}: XtalDecor, e: Event) => {
+            if(e.timeStamp === this._lastTimeStamp) return;
+            const target = e.target as HTMLAnchorElement;
+            if(target.localName !== 'a' || !target.target) return;
+            let root = this.getRootNode() as HTMLElement;
+            const iframe = root.querySelector(`iframe[name="${target.target}"]`)
+            if(iframe !== null){
+                debugger;
+            }
+        }
     }
+
+    init = (h: HTMLElement) => {
+        debugger;
+    };
 }
 define(ReSrc);
