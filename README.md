@@ -1,8 +1,6 @@
 # re-src
 
-##  iFrame you [TODO]
-
-The hyperlink tag supports a target attribute, which causes an iframe to load the content of the url.  However, this doesn't update the address bar, so it is difficult to bookmark or email this state.
+The hyperlink tag supports a target attribute, which causes an iframe to load the content of the url.  However, this doesn't update the address bar, so it is difficult to bookmark or email this "state".
 
 ```html
 <nav>
@@ -14,9 +12,23 @@ The hyperlink tag supports a target attribute, which causes an iframe to load th
 <iframe name="myIFrame"></iframe>
 ```
 
-Now we don't need to block the link from doing its thing.  We do need to update the address bar.  Suggested syntax:
+Suggested syntax:
 
 https://mydomain.com/contextPath/myResource#:~:re-src=myIFrame:a.html
+
+```html
+<re-src upgrade=nav if-wants-to-be=persistable></re-src>
+...
+
+<nav be-persistable>
+    <a href="a.html" target="myIFrame">A</a>
+    <br>
+    <a href="b.html" target="myIFrame">B</a>
+
+</nav>
+<iframe name="myIFrame"></iframe>
+```
+
 
 nav needs to confirm it has a hyperlink child with target=myIframe and href=a.html
 
