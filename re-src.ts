@@ -17,10 +17,14 @@ export function updateHash(key: string, val: string){
             } 
         }
     });
+    let newHash = undefined;
     if(hashChanged){
-        location.hash = splitHash.join(':~:');
+        newHash = splitHash.join(':~:');
     }else if(!foundKey){
-        location.hash += `:~:${key}=${val}`;
+        newHash = location.hash + `:~:${key}=${val}`;
+    }
+    if(newHash !== undefined){
+        history.replaceState(history.state, '', '#' + newHash);
     }
 }
 
