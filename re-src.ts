@@ -17,14 +17,17 @@ export function updateHash(key: string, val: string){
             } 
         }
     });
-    let newHash = undefined;
+    let newHash: string | undefined = undefined;
     if(hashChanged){
         newHash = splitHash.join(':~:');
     }else if(!foundKey){
         newHash = location.hash + `:~:${key}=${val}`;
     }
     if(newHash !== undefined){
-        history.replaceState(history.state, '', '#' + newHash);
+        setTimeout(() =>{
+            history.replaceState(history.state, '', '#' + newHash);
+        }, 100)
+        
     }
 }
 

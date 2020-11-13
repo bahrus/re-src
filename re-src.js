@@ -24,7 +24,9 @@ export function updateHash(key, val) {
         newHash = location.hash + `:~:${key}=${val}`;
     }
     if (newHash !== undefined) {
-        history.replaceState(history.state, '', '#' + newHash);
+        setTimeout(() => {
+            history.replaceState(history.state, '', '#' + newHash);
+        }, 100);
     }
 }
 export class ReSrc extends XtalDecor {
