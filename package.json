@@ -1,15 +1,22 @@
 {
   "name": "re-src",
   "version": "0.0.0",
-  "description": "",
+  "description": "Persist iFrame url loading",
+  "keywords": ["webcomponents", "webcomponent", "customelements", "customelement", "iframe", "iframe-persister"],
   "main": "re-src.js",
   "module": "re-src.js",
+  "exports": {
+    ".": "./re-src.js"
+  },
+  "files": [],
+  "types": "./types.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "web-dev-server --node-resolve --app-index demo/dev.html  --watch --open"
-
+    "start": "web-dev-server --node-resolve --app-index demo/dev.html  --watch --open",
+    "package-check": "package-check"
   },
   "dependencies": {
+    "@skypack/package-check": "^0.2.2",
     "xtal-decor": "0.0.19"
   },
   "devDependencies": {
