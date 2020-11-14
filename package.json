@@ -1,8 +1,15 @@
 {
   "name": "re-src",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Persist iFrame url loading",
-  "keywords": ["webcomponents", "webcomponent", "customelements", "customelement", "iframe", "iframe-persister"],
+  "keywords": [
+    "webcomponents",
+    "webcomponent",
+    "customelements",
+    "customelement",
+    "iframe",
+    "iframe-persister"
+  ],
   "main": "re-src.js",
   "module": "re-src.js",
   "exports": {
