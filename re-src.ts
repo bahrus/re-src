@@ -1,31 +1,70 @@
 import {XtalDecor, PropAction, propActions} from 'xtal-decor/xtal-decor.js';
 import {define, AttributeProps} from 'xtal-element/XtalElement.js';
 
+const delimiter = ':-:';
+
+export function initIFrames(h: HTMLElement){
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', e => {
+            initIFrames2(h);
+        });
+        return;
+    }
+    initIFrames2(h);
+}
+
+export function initIFrames2(h: HTMLElement){
+    const splitHash = location.hash.split(delimiter);
+    splitHash.forEach(hash => {
+        const splitEq = hash.split('=');
+        if(splitEq.length === 2 && splitEq[0] === 're-src'){
+            const splitColon = splitEq[1].split(':');
+            const targetName = splitColon[0];
+            const href = splitColon[1];
+            const link = h.querySelector(`a[target="${targetName}"][href="${href}"]`);
+            if(link === null) return;
+            if(splitColon.length === 2){
+                const iframe = (h.getRootNode() as HTMLElement).querySelector(`iframe[name="${targetName}"]`) as HTMLIFrameElement;
+                if(iframe == null) return;
+                iframe.src = href;
+            }
+        }
+    })
+}
+
 export function updateHash(key: string, val: string){
-    const splitHash = location.hash.split(':~:');
+    let hash = location.hash;
+    if(hash.startsWith('#')) hash = hash.substr(1);
+    const splitHash = hash.split(delimiter);
     let hashChanged = false;
     let foundKey = false;
     splitHash.forEach((hash, idx) => {
-        const splitEq = hash.split('=');
-        if(splitEq.length === 2 && splitEq[0] === key){
-            foundKey = true;
-            if(splitEq[1] !== val){
-                hashChanged = true;
-                splitEq[1] = val;
-                const newHash = splitEq.join('=');
-                splitHash[idx] = newHash;
-            } 
+        const splitEqOuter = hash.split('=');
+        if(splitEqOuter.length === 2 && splitEqOuter[0] === 're-src'){
+            const splitEq = splitEqOuter[1].split(':');
+            if(splitEq.length === 2 && splitEq[0] === key){
+                foundKey = true;
+                if(splitEq[1] !== val){
+                    hashChanged = true;
+                    splitEq[1] = val;
+                    splitEqOuter[1] = splitEq.join(':');
+                    const newHash = splitEqOuter.join('=');
+                    splitHash[idx] = newHash;
+                } 
+            }
         }
+        
     });
     let newHash: string | undefined = undefined;
     if(hashChanged){
-        newHash = splitHash.join(':~:');
+        newHash = '#' + splitHash.join(delimiter);
     }else if(!foundKey){
-        newHash = location.hash + `:~:${key}=${val}`;
+        const separator = location.hash.length > 1 ? '&' : '#';
+        newHash = location.hash + `${separator}${delimiter}re-src=${key}:${val}`;
     }
     if(newHash !== undefined){
         setTimeout(() =>{
-            history.replaceState(history.state, '', '#' + newHash);
+            history.replaceState(history.state, '', newHash);
         }, 100)
         
     }
@@ -52,6 +91,8 @@ export class ReSrc extends XtalDecor {
         }
     }
 
-    init = (h: HTMLElement) => {};
+    init = (h: HTMLElement) => {
+        initIFrames(h);
+    };
 }
 define(ReSrc);
