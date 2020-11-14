@@ -1,5 +1,9 @@
 # re-src
 
+<a href="https://nodei.co/npm/re-src/"><img src="https://nodei.co/npm/re-src.png"></a>
+
+<img src="https://badgen.net/bundlephobia/minzip/re-src">
+
 The hyperlink tag supports a target attribute, which causes an iframe to load the content of the url.  However, this doesn't update the address bar, so it is difficult to bookmark or email this "state".
 
 ```html
@@ -14,7 +18,7 @@ The hyperlink tag supports a target attribute, which causes an iframe to load th
 
 Suggested syntax:
 
-https://mydomain.com/contextPath/myResource#:~:re-src=myIFrame:a.html
+https://mydomain.com/contextPath/myResource#:-:re-src=myIFrame:a.html
 
 ```html
 <re-src upgrade=nav if-wants-to-be=persistable></re-src>
@@ -29,10 +33,11 @@ https://mydomain.com/contextPath/myResource#:~:re-src=myIFrame:a.html
 <iframe name="myIFrame"></iframe>
 ```
 
-**NB:**  The syntax above for the url, in particular the :~: delimiter, was chosen to piggy-back on [standards proposals](https://github.com/slightlyoff/history_api#ui-state-fragments).  However, because the implementation of the fragment proposal is in the early stages, it appears that there's no way to read the hash value programmatically when that delimiter is used.  So for now we will use :-: instead:
+**NB:**  The syntax above for the url, in particular the :-: delimiter, is a temporary(?) fallback, inspired by the  [fragments standards proposals](https://github.com/slightlyoff/history_api#ui-state-fragments).  However, because the implementation of the fragment proposal is in the early stages, it appears that there's no way to read the hash value programmatically when the specified delimiter is used ( :~: ).  So for now we will use :-: instead:
 
 https://mydomain.com/contextPath/myResource#:-:re-src=myIFrame:a.html
 
+Hopefully soon there will be an api that allows reading fragment directives.
 
 nav needs to confirm it has a hyperlink child with target=myIframe and href=a.html
 
