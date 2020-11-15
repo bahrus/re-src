@@ -42,3 +42,9 @@ Hopefully soon there will be an api that allows reading fragment directives.
 nav needs to confirm it has a hyperlink child with target=myIframe and href=a.html
 
 If confirmed, then it sets myIFrame's src = a.html.
+
+History.state also gets updated:
+
+```JSON
+{"reSrc":{"myIFrame":{"test":"b","textContent":"B"}}}
+```
