@@ -28,11 +28,22 @@ export function initIFrames2(h: HTMLElement){
                 if(iframe == null) return;
                 iframe.src = href;
             }
+            updateHistory(link as HTMLAnchorElement, location.hash);
         }
     })
 }
 
-export function updateHash(key: string, val: string){
+export function updateHistory(target: HTMLAnchorElement, newHash: string){
+    const historyCopy = history.state === null ? {} :  {...history.state};
+    if(historyCopy.reSrc === undefined) historyCopy.reSrc = {};
+    const reSrc = historyCopy.reSrc;
+    const newObj = {...target.dataset} as any;
+    newObj.textContent = target.textContent!;
+    reSrc[target.target!] = newObj;
+    history.replaceState(historyCopy, '', newHash);
+}
+
+export function updateHash(key: string, val: string, target: HTMLAnchorElement){
     let hash = location.hash;
     if(hash.startsWith('#')) hash = hash.substr(1);
     const splitHash = hash.split(delimiter);
@@ -41,13 +52,13 @@ export function updateHash(key: string, val: string){
     splitHash.forEach((hash, idx) => {
         const splitEqOuter = hash.split('=');
         if(splitEqOuter.length === 2 && splitEqOuter[0] === 're-src'){
-            const splitEq = splitEqOuter[1].split(':');
-            if(splitEq.length === 2 && splitEq[0] === key){
+            const splitColon = splitEqOuter[1].split(':');
+            if(splitColon.length === 2 && splitColon[0] === key){
                 foundKey = true;
-                if(splitEq[1] !== val){
+                if(splitColon[1] !== val){
                     hashChanged = true;
-                    splitEq[1] = val;
-                    splitEqOuter[1] = splitEq.join(':');
+                    splitColon[1] = val;
+                    splitEqOuter[1] = splitColon.join(':');
                     const newHash = splitEqOuter.join('=');
                     splitHash[idx] = newHash;
                 } 
@@ -64,7 +75,8 @@ export function updateHash(key: string, val: string){
     }
     if(newHash !== undefined){
         setTimeout(() =>{
-            history.replaceState(history.state, '', newHash);
+            updateHistory(target, newHash!);
+            
         }, 100)
         
     }
@@ -86,7 +98,7 @@ export class ReSrc extends XtalDecor {
             let root = this.getRootNode() as HTMLElement;
             const iframe = root.querySelector(`iframe[name="${target.target}"]`)
             if(iframe !== null){
-                updateHash(target.target, target.getAttribute('href')!);
+                updateHash(target.target, target.getAttribute('href')!, target);
             }
         }
     }
