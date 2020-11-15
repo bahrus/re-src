@@ -1,6 +1,6 @@
 {
   "name": "re-src",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Persist iFrame url loading",
   "keywords": [
     "webcomponents",
