@@ -52,3 +52,18 @@ History.state also gets updated:
 ## iFrame caching [TODO]
 
 The ability to load different url's into an iframe, without a single line of JavaScript, is a beauty to behold.  But there's one drawback -- if one switches back and forth between two different links, alternately loading the same views repetitively, reusing the same iframe means that we lose the effect of previous interactions, including scroll position for starters.   
+
+So we want to enhance the hyperlink / iframe interplay, without losing the basic functionality we get sans JS.
+
+```html
+<re-src upgrade=nav if-wants-to-be=persistable></re-src>
+...
+
+<nav be-persistable>
+    <a href="a.html" be-target-caching target="myIFrame">A</a>
+    <br>
+    <a href="b.html" be-target-caching target="myIFrame">B</a>
+
+</nav>
+<iframe name="myIFrame"></iframe>
+```
