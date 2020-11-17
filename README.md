@@ -48,3 +48,7 @@ History.state also gets updated:
 ```JSON
 {"reSrc":{"myIFrame":{"test":"b","textContent":"B"}}}
 ```
+
+## iFrame caching [TODO]
+
+The ability to load different url's into an iframe, without a single line of JavaScript, is a beauty to behold.  But there's one drawback -- if one switches back and forth between two different links, alternately loading the same views repetitively, reusing the same iframe means that we lose the effect of previous interactions, including scroll position for starters.   

@@ -23,10 +23,10 @@
     "package-check": "package-check"
   },
   "dependencies": {
-    "@skypack/package-check": "^0.2.2",
     "xtal-decor": "0.0.19"
   },
   "devDependencies": {
+    "@skypack/package-check": "0.2.2",
     "xtal-test": "0.0.48",
     "@web/dev-server": "0.0.19"
   },
