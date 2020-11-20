@@ -10,6 +10,15 @@
                 background-color: black;
             }
         }
+        iframe{
+            position:absolute;
+            left: -20000px;
+        }
+        iframe[data-selected]{
+            /* visibility: visible; */
+            position:static;
+            
+        }
     </style>
 </head>
 <body>
@@ -19,11 +28,16 @@
         <a href="a.html" be-target-caching target="myIFrameA">A</a>
         <br>
         <a href="b.html" be-target-caching target="myIFrameB">B</a>
-
     </nav>
-    <iframe name="myIFrameA"></iframe>
-    <iframe name="myIFrameB"></iframe>
+    <at-most-one attribute="data-selected">
+        <iframe name="myIFrameA"></iframe>
+        <iframe name="myIFrameB"></iframe>
+    </at-most-one>
+
     <script type=module src="/re-src.js"></script>
     <script type=module src="/target-caching.js"></script>
+    <script type=module>
+        import 'at-most-one/at-most-one.js';
+    </script>
 </body>
 </html>
