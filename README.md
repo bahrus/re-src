@@ -51,7 +51,7 @@ History.state also gets updated:
 
 ## iFrame caching [TODO]
 
-The ability to load different url's into an iframe, without a single line of JavaScript, is a beauty to behold.  But there's one drawback -- if one switches back and forth between two different links, alternately loading the same views repetitively, reusing the same iframe means that we lose the effect of previous interactions, including scroll position for starters.   
+The ability to load different url's into an iframe, without a single line of JavaScript, is a beauty to behold.  But there's one drawback -- if one switches back and forth between two different links, alternately loading the same views repetitively, reusing the same iframe means that we lose the effect of previous interactions, including scroll position for starters.  It's also disappointing that even if clicking on the *same* hyperlink, the iframe is repeatedly reloading, which seems wasteful, and also causes previous interactions to be lost.
 
 So we want to enhance the hyperlink / iframe interplay, without losing the basic functionality we get sans JS.
 

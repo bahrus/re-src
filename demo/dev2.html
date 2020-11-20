@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            body{
+                background-color: black;
+            }
+        }
+    </style>
+</head>
+<body>
+    <re-src></re-src>
+    <target-caching></target-caching>
+    <nav be-persistable>
+        <a href="a.html" be-target-caching target="myIFrameA">A</a>
+        <br>
+        <a href="b.html" be-target-caching target="myIFrameB">B</a>
+
+    </nav>
+    <iframe name="myIFrameA"></iframe>
+    <iframe name="myIFrameB"></iframe>
+    <script type=module src="/re-src.js"></script>
+    <script type=module src="/target-caching.js"></script>
+</body>
+</html>
