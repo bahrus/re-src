@@ -14,7 +14,9 @@ export function initIFrames(h: HTMLElement){
 }
 
 export function initIFrames2(h: HTMLElement){
-    const splitHash = location.hash.split(delimiter);
+    const splitHash = location.hash.split(delimiter).map(s => {
+        return s.endsWith('&') ? s.substr(0, s.length - 1) : s
+    });
     splitHash.forEach(hash => {
         const splitEq = hash.split('=');
         if(splitEq.length === 2){
@@ -30,8 +32,11 @@ export function initIFrames2(h: HTMLElement){
                     }
                     break;
                 case 're-src-grp':{
-                    debugger;
-                    //const iframe = h.getRootNode().querySelector(`iframe[val]`)
+                    //debugger;
+                    const iframe = (h.getRootNode() as DocumentFragment).querySelector(`iframe[name="${val}"]`) as HTMLIFrameElement;
+                    if(iframe !== null){
+                        iframe.dataset.selected = '';
+                    }
                 }
                 break;
             }
