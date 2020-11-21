@@ -17,14 +17,14 @@
         iframe[data-selected]{
             /* visibility: visible; */
             position:static;
-            
+
         }
     </style>
 </head>
 <body>
     <re-src></re-src>
     <target-caching></target-caching>
-    <nav be-persistable>
+    <nav be-persistable='{"group":"myIFrame"}'>
         <a href="a.html" be-target-caching target="myIFrameA">A</a>
         <br>
         <a href="b.html" be-target-caching target="myIFrameB">B</a>

@@ -21,13 +21,16 @@ export function initIFrames2(h: HTMLElement){
             const splitColon = splitEq[1].split(':');
             const targetName = splitColon[0];
             const href = splitColon[1];
-            const link = h.querySelector(`a[target="${targetName}"][href="${href}"]`);
+            const link = h.querySelector(`a[target="${targetName}"][href="${href}"]`) as HTMLAnchorElement;
             if(link === null) return;
-            if(splitColon.length === 2){
-                const iframe = (h.getRootNode() as HTMLElement).querySelector(`iframe[name="${targetName}"]`) as HTMLIFrameElement;
-                if(iframe == null) return;
-                iframe.src = href;
-            }
+            link.click();
+            // var event = new Event('click');
+            // link.dispatchEvent(event);
+            // if(splitColon.length === 2){
+            //     const iframe = (h.getRootNode() as HTMLElement).querySelector(`iframe[name="${targetName}"]`) as HTMLIFrameElement;
+            //     if(iframe == null) return;
+            //     iframe.src = href;
+            // }
             updateHistory(link as HTMLAnchorElement, location.hash);
         }
     })
@@ -43,12 +46,13 @@ export function updateHistory(target: HTMLAnchorElement, newHash: string){
     history.replaceState(historyCopy, '', newHash);
 }
 
-export function updateHash(key: string, val: string, target: HTMLAnchorElement){
+export function updateHash(key: string, val: string, target: HTMLAnchorElement, group: string | undefined){
     let hash = location.hash;
     if(hash.startsWith('#')) hash = hash.substr(1);
     const splitHash = hash.split(delimiter);
     let hashChanged = false;
     let foundKey = false;
+    let foundGroupKey = false;
     splitHash.forEach((hash, idx) => {
         const splitEqOuter = hash.split('=');
         if(splitEqOuter.length === 2 && splitEqOuter[0] === 're-src'){
@@ -64,7 +68,6 @@ export function updateHash(key: string, val: string, target: HTMLAnchorElement){
                 } 
             }
         }
-        
     });
     let newHash: string | undefined = undefined;
     if(hashChanged){
@@ -73,11 +76,15 @@ export function updateHash(key: string, val: string, target: HTMLAnchorElement){
         const separator = location.hash.length > 1 ? '&' : '#';
         newHash = location.hash + `${separator}${delimiter}re-src=${key}:${val}`;
     }
+    if(group !== undefined && !foundGroupKey){
+        const separator = location.hash.length > 1 ? '&' : '#';
+        newHash = newHash + `${separator}${delimiter}re-src-grp=${group}:${target.target}`;
+    }
     if(newHash !== undefined){
         setTimeout(() =>{
             updateHistory(target, newHash!);
             
-        }, 100)
+        }, 100);
         
     }
 }
@@ -91,14 +98,15 @@ export class ReSrc extends XtalDecor {
     _lastTimeStamp = 0;
 
     capture = {
-        click: ({self}: XtalDecor, e: Event) => {
+        click: ({self}: any, e: Event) => {
             if(e.timeStamp === this._lastTimeStamp) return;
+            this._lastTimeStamp = e.timeStamp;
             const target = e.target as HTMLAnchorElement;
             if(target.localName !== 'a' || !target.target) return;
             let root = this.getRootNode() as HTMLElement;
             const iframe = root.querySelector(`iframe[name="${target.target}"]`)
             if(iframe !== null){
-                updateHash(target.target, target.getAttribute('href')!, target);
+                updateHash(target.target, target.getAttribute('href')!, target, self.group);
             }
         }
     }

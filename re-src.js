@@ -21,12 +21,14 @@ export function initIFrames2(h) {
             const link = h.querySelector(`a[target="${targetName}"][href="${href}"]`);
             if (link === null)
                 return;
-            if (splitColon.length === 2) {
-                const iframe = h.getRootNode().querySelector(`iframe[name="${targetName}"]`);
-                if (iframe == null)
-                    return;
-                iframe.src = href;
-            }
+            link.click();
+            // var event = new Event('click');
+            // link.dispatchEvent(event);
+            // if(splitColon.length === 2){
+            //     const iframe = (h.getRootNode() as HTMLElement).querySelector(`iframe[name="${targetName}"]`) as HTMLIFrameElement;
+            //     if(iframe == null) return;
+            //     iframe.src = href;
+            // }
             updateHistory(link, location.hash);
         }
     });
@@ -41,13 +43,14 @@ export function updateHistory(target, newHash) {
     reSrc[target.target] = newObj;
     history.replaceState(historyCopy, '', newHash);
 }
-export function updateHash(key, val, target) {
+export function updateHash(key, val, target, group) {
     let hash = location.hash;
     if (hash.startsWith('#'))
         hash = hash.substr(1);
     const splitHash = hash.split(delimiter);
     let hashChanged = false;
     let foundKey = false;
+    let foundGroupKey = false;
     splitHash.forEach((hash, idx) => {
         const splitEqOuter = hash.split('=');
         if (splitEqOuter.length === 2 && splitEqOuter[0] === 're-src') {
@@ -72,6 +75,10 @@ export function updateHash(key, val, target) {
         const separator = location.hash.length > 1 ? '&' : '#';
         newHash = location.hash + `${separator}${delimiter}re-src=${key}:${val}`;
     }
+    if (group !== undefined && !foundGroupKey) {
+        const separator = location.hash.length > 1 ? '&' : '#';
+        newHash = newHash + `${separator}${delimiter}re-src-grp=${group}:${target.target}`;
+    }
     if (newHash !== undefined) {
         setTimeout(() => {
             updateHistory(target, newHash);
@@ -89,13 +96,14 @@ export class ReSrc extends XtalDecor {
             click: ({ self }, e) => {
                 if (e.timeStamp === this._lastTimeStamp)
                     return;
+                this._lastTimeStamp = e.timeStamp;
                 const target = e.target;
                 if (target.localName !== 'a' || !target.target)
                     return;
                 let root = this.getRootNode();
                 const iframe = root.querySelector(`iframe[name="${target.target}"]`);
                 if (iframe !== null) {
-                    updateHash(target.target, target.getAttribute('href'), target);
+                    updateHash(target.target, target.getAttribute('href'), target, self.group);
                 }
             }
         };
