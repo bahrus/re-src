@@ -17,21 +17,27 @@ export function initIFrames2(h: HTMLElement){
     const splitHash = location.hash.split(delimiter);
     splitHash.forEach(hash => {
         const splitEq = hash.split('=');
-        if(splitEq.length === 2 && splitEq[0] === 're-src'){
+        if(splitEq.length === 2){
             const splitColon = splitEq[1].split(':');
-            const targetName = splitColon[0];
-            const href = splitColon[1];
-            const link = h.querySelector(`a[target="${targetName}"][href="${href}"]`) as HTMLAnchorElement;
-            if(link === null) return;
-            link.click();
-            // var event = new Event('click');
-            // link.dispatchEvent(event);
-            // if(splitColon.length === 2){
-            //     const iframe = (h.getRootNode() as HTMLElement).querySelector(`iframe[name="${targetName}"]`) as HTMLIFrameElement;
-            //     if(iframe == null) return;
-            //     iframe.src = href;
-            // }
-            updateHistory(link as HTMLAnchorElement, location.hash);
+            const key = splitColon[0];
+            const val = splitColon[1];
+            switch(splitEq[0]){
+                case 're-src':{
+                        const link = h.querySelector(`a[target="${key}"][href="${val}"]`) as HTMLAnchorElement;
+                        if(link === null) return;
+                        link.click();
+                        updateHistory(link as HTMLAnchorElement, location.hash);
+                    }
+                    break;
+                case 're-src-grp':{
+                    debugger;
+                    //const iframe = h.getRootNode().querySelector(`iframe[val]`)
+                }
+                break;
+            }
+        }
+        if(splitEq.length === 2 && splitEq[0] === 're-src'){
+            
         }
     })
 }
@@ -77,7 +83,8 @@ export function updateHash(key: string, val: string, target: HTMLAnchorElement, 
         newHash = location.hash + `${separator}${delimiter}re-src=${key}:${val}`;
     }
     if(group !== undefined && !foundGroupKey){
-        const separator = location.hash.length > 1 ? '&' : '#';
+        if(newHash === undefined) newHash = '#';
+        const separator = newHash.length > 1 ? '&' : '#';
         newHash = newHash + `${separator}${delimiter}re-src-grp=${group}:${target.target}`;
     }
     if(newHash !== undefined){
