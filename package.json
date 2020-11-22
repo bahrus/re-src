@@ -1,6 +1,6 @@
 {
   "name": "re-src",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Persist iFrame url loading",
   "keywords": [
     "webcomponents",
@@ -17,7 +17,8 @@
     "default": "./index.js"
   },
   "files": [
-    "re-src.js", "target-caching.js"
+    "re-src.js",
+    "target-caching.js"
   ],
   "types": "./types.d.ts",
   "scripts": {
