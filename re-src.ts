@@ -85,7 +85,6 @@ export function updateHash(key: string, val: string, target: HTMLAnchorElement, 
                 case 're-src-grp':{
                     if(splitColon.length === 2 && splitColon[0] === group){
                         foundGroupKey = true;
-                        debugger;
                         if(splitColon[1] !== key){
                             hashChanged = true;
                             splitColon[1] = key;
@@ -104,9 +103,12 @@ export function updateHash(key: string, val: string, target: HTMLAnchorElement, 
     let newHash: string | undefined = undefined;
     if(hashChanged){
         newHash = '#' + splitHash.join(delimiter);
-    }else if(!foundKey){
+    }else{
+        newHash = location.hash;
+    }
+    if(!foundKey){
         const separator = location.hash.length > 1 ? '&' : '#';
-        newHash = location.hash + `${separator}${delimiter}re-src=${key}:${val}`;
+        newHash = newHash + `${separator}${delimiter}re-src=${key}:${val}`;
     }
     if(group !== undefined && !foundGroupKey){
         if(newHash === undefined) newHash = '#';
