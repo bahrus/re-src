@@ -11,12 +11,14 @@
     "iframe-persister"
   ],
   "main": "re-src.js",
-  "module": "index.js",
+  "module": "re-src.js",
   "exports": {
     "import": "./index.js",
     "default": "./index.js"
   },
-  "files": [],
+  "files": [
+    "re-src.js", "target-caching.js"
+  ],
   "types": "./types.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
