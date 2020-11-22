@@ -11,7 +11,7 @@
     "iframe-persister"
   ],
   "main": "re-src.js",
-  "module": "re-src.js",
+  "module": "index.js",
   "exports": {
     "import": "./index.js",
     "default": "./index.js"
