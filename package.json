@@ -13,7 +13,8 @@
   "main": "re-src.js",
   "module": "re-src.js",
   "exports": {
-    ".": "./re-src.js"
+    "import": "./index.js",
+    "default": "./index.js"
   },
   "files": [],
   "types": "./types.d.ts",
