@@ -18,8 +18,8 @@ The ability to load different url's into an iframe, without a single line of Jav
 
 However, this built-in functionality has a number of limitations:
 
-1. Although back / forward functionality exists, the ability to send the "state," as described in the address bar, doesn't work.  You might be looking at page "A", but when you send the url in the address to a friend, they won't see any iframe loaded.
-2. Switching back and forth between the two links causes a server request to be made, checking if there's been an update to the resource.  While this might not be very costly, the bigger problem is that:
+1. Although back / forward functionality works in this scenario, the ability to copy and paste the "state" of which link is currently being viewed, as represented in the address bar, doesn't work.  You might be looking at page "A", but when you send the url in the address to a friend, they won't see any iframe loaded.
+2. Switching back and forth between the two links causes a server request to be made, checking if there's been an update to the resource (best case scenario).  While this might not be very costly, the bigger problem is that:
 3. The iframe is reloaded each time you go back to a previously selected link, losing previous user interactions.  This can be also be quite costly for complex content that  uses rich, JS heavy libraries.
 
 "re-src" and a few other web components described here, give the developer the ability to enhance / modify the native behavior of the hyperlink / iframe partnership.  re-src "progressively enhances" the native behavior, so until the library loads, the native functionality can be used, if that is desired.
@@ -63,7 +63,7 @@ If there's some other (conflicting) library that looks for / acts on the  "be-pe
 <details>
     <summary>Technical Notes</summary>
 
-**NB:**  The syntax above for the url, in particular the :-: delimiter, is a temporary(?) fallback, inspired by the  [fragments standards proposals](https://github.com/slightlyoff/history_api#ui-state-fragments).  However, because the implementation of the fragment proposal is in the early stages, it appears that there's no way to read the hash value programmatically when the specified delimiter is used ( :~: ).  So for now we use :-: instead:
+**NB:**  For the markup above, if you look at the way the address bar tracks the user interaction, it is clearly inspired by the  [fragments standards proposals](https://github.com/slightlyoff/history_api#ui-state-fragments).  However, because the implementation of the fragment proposal is in the early stages, it appears that there's no way to read the hash value programmatically when the specified delimiter is used ( :~: ). For that reason, the :-: delimiter is used as a temporary(?) fallback, until the api is more usable with the :~: delimiter.  So you will url's like:
 
 https://mydomain.com/contextPath/myResource#:-:re-src=myIFrame:a.html
 
@@ -71,9 +71,11 @@ Hopefully soon there will be an api that allows reading fragment directives.
 
 ## Security Validation
 
-nav needs to confirm it has a hyperlink child with target=myIframe and href=a.html
+re-src confirms the nav element has a hyperlink child with target=myIframe and href=a.html.  
 
 If confirmed, then it sets myIFrame's src = a.html.
+
+Otherwise, the address bar could be used to load any arbitrary url.
 
 ## Effect on history.state
 
@@ -105,7 +107,7 @@ While this does prevent having to lose the loading of A content in order to see 
 
 The "target-caching" component affects hyperlinks with attribute "be-caching".  This attribute can also be customized.
 
-What this is done is it intercepts the hyperlink's click event.  The first time, it let's the link pass through normally.  After that, it blocks the link ("preventDefault").  In either case, it sets attribute "data-selected" attribute on the target iframe.
+What target-caching does is it intercepts the hyperlink's click event.  The first time, it let's the link pass through normally.  After that, it blocks the link ("preventDefault").  In either case, it sets attribute "data-selected" attribute on the target iframe.
 
 Unfortunately, if one clicks on both link A, and link B, both iframes will now have "data-selected" attribute, which means we can't use CSS to hide previously selected iFrames.
 
@@ -118,7 +120,7 @@ The web component "at-most-one" prevents multiple instances of the same attribut
 </at-most-one>
 ```
 
-So the entire markup, that address all three points above, looks like:
+So the entire markup, that addresses all three points above, looks like:
 
 ```html
 <re-src></re-src>
@@ -136,6 +138,16 @@ So the entire markup, that address all three points above, looks like:
 <script type=module src="re-src/re-src.js"></script>
 <script type=module src="re-src/target-caching.js"></script>
 <script type=module src="at-most-one/at-most-one.js"></script>
+
+<style>
+    iframe{
+        position:absolute;
+        left: -20000px;
+    }
+    iframe[data-selected]{
+        position:static;
+    }
+</style>
 ```
 
 Note the extra setting we haven't seen before:  
