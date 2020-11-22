@@ -20,7 +20,7 @@ However, this built-in functionality has a number of limitations:
 
 1. Although back / forward functionality exists, the ability to send the "state," as described in the address bar, doesn't work.  You might be looking at page "A", but when you send the url in the address to a friend, they won't see any iframe loaded.
 2. Switching back and forth between the two links causes a server request to be made, checking if there's been an update to the resource.  While this might not be very costly, the bigger problem is that:
-3. The page is reloaded each time you go back to a previously selected link, losing previous user interactions.  This can be also be quite costly for complex pages using rich, JS heavy libraries.
+3. The iframe is reloaded each time you go back to a previously selected link, losing previous user interactions.  This can be also be quite costly for complex content that  uses rich, JS heavy libraries.
 
 "re-src" and a few other web components described here, give the developer the ability to enhance / modify the native behavior of the hyperlink / iframe partnership.  re-src "progressively enhances" the native behavior, so until the library loads, the native functionality can be used, if that is desired.
 
