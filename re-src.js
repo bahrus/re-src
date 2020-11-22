@@ -65,17 +65,38 @@ export function updateHash(key, val, target, group) {
     let foundGroupKey = false;
     splitHash.forEach((hash, idx) => {
         const splitEqOuter = hash.split('=');
-        if (splitEqOuter.length === 2 && splitEqOuter[0] === 're-src') {
+        if (splitEqOuter.length === 2) {
             const splitColon = splitEqOuter[1].split(':');
-            if (splitColon.length === 2 && splitColon[0] === key) {
-                foundKey = true;
-                if (splitColon[1] !== val) {
-                    hashChanged = true;
-                    splitColon[1] = val;
-                    splitEqOuter[1] = splitColon.join(':');
-                    const newHash = splitEqOuter.join('=');
-                    splitHash[idx] = newHash;
-                }
+            switch (splitEqOuter[0]) {
+                case 're-src':
+                    {
+                        if (splitColon.length === 2 && splitColon[0] === key) {
+                            foundKey = true;
+                            if (splitColon[1] !== val) {
+                                hashChanged = true;
+                                splitColon[1] = val;
+                                splitEqOuter[1] = splitColon.join(':');
+                                const newHash = splitEqOuter.join('=');
+                                splitHash[idx] = newHash;
+                            }
+                        }
+                    }
+                    break;
+                case 're-src-grp':
+                    {
+                        if (splitColon.length === 2 && splitColon[0] === group) {
+                            foundGroupKey = true;
+                            debugger;
+                            if (splitColon[1] !== key) {
+                                hashChanged = true;
+                                splitColon[1] = key;
+                                splitEqOuter[1] = splitColon.join(':');
+                                const newHash = splitEqOuter.join('=');
+                                splitHash[idx] = newHash;
+                            }
+                        }
+                    }
+                    break;
             }
         }
     });
