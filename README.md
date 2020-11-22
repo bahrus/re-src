@@ -109,3 +109,41 @@ What this is done is it intercepts the hyperlink's click event.  The first time,
 
 Unfortunately, if one clicks on both link A, and link B, both iframes will now have "data-selected" attribute, which means we can't use CSS to hide previously selected iFrames.
 
+The web component "at-most-one" prevents multiple instances of the same attribute within its child elements:
+
+```html
+<at-most-one attribute="data-selected">
+    <iframe name="myIFrameA"></iframe>
+    <iframe name="myIFrameB"></iframe>
+</at-most-one>
+```
+
+So the entire markup, that address all three points above, looks like:
+
+```html
+<re-src></re-src>
+<target-caching></target-caching>
+<nav be-persistable='{"group":"myIFrame"}'>
+    <a href="a.html" be-target-caching target="myIFrameA">A</a>
+    <br>
+    <a href="b.html" be-target-caching target="myIFrameB">B</a>
+</nav>
+<at-most-one attribute="data-selected">
+    <iframe name="myIFrameA"></iframe>
+    <iframe name="myIFrameB"></iframe>
+</at-most-one>
+
+<script type=module src="re-src/re-src.js"></script>
+<script type=module src="re-src/target-caching.js"></script>
+<script type=module src="at-most-one/at-most-one.js"></script>
+```
+
+Note the extra setting we haven't seen before:  
+
+```html
+<nav be-persistable='{"group":"myIFrame"}'>
+...
+</nav>
+```
+
+This allows the address bar to encode which of the iframes in the targets specified within the nav tag was last selected.
