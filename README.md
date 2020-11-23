@@ -62,7 +62,7 @@ If there's some other (conflicting) library that looks for / acts on the  "be-pe
 <details>
     <summary>Technical Notes</summary>
 
-**NB:**  For the markup above, if you look at the way the address bar tracks the user interaction, it is clearly inspired by the  [fragments standards proposals](https://github.com/slightlyoff/history_api#ui-state-fragments).  However, because the implementation of the fragment proposal is in the early stages, it appears that there's no way to read the hash value programmatically when the specified delimiter is used ( :~: ). For that reason, the :-: delimiter is used as a temporary(?) fallback, until the api is more usable with the :~: delimiter.  So you will get url's like:
+**NB:**  For the markup above, if you look at the way the address bar tracks the user interaction, it is clearly inspired by the  [fragments standards proposals](https://github.com/slightlyoff/history_api#ui-state-fragments).  However, because the implementation of the fragment proposal is in the early stages, it appears that there's no way to read the hash value programmatically when the specified delimiter is used ( :\~: ). For that reason, the :-: delimiter is used as a temporary(?) fallback, until the api is more usable with the :\~: delimiter.  So you will get url's like:
 
 https://mydomain.com/contextPath/myResource#:-:re-src=myIFrame:a.html
 
@@ -106,7 +106,7 @@ While this does prevent having to lose the loading of A content in order to see 
 
 The "target-caching" component affects hyperlinks with attribute "be-caching".  This attribute can also be customized.
 
-What target-caching does is it intercepts the hyperlink's click event.  The first time, it let's the link pass through normally.  After that, it blocks the link ("preventDefault"), but passes the link's href to the iframe's src property programmatically.  In either case, it sets attribute "data-selected" attribute on the target iframe.
+What target-caching does is it intercepts the hyperlink's click event.  The first time, it let's the link pass through normally.  After that, it blocks the link ("preventDefault"), since the iframe was already loaded.  In either case, it sets attribute "data-selected" attribute on the target iframe.
 
 Unfortunately, if one clicks on both link A, and link B, both iframes will now have "data-selected" attribute, which means we can't use CSS to hide previously selected iFrames.
 
