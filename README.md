@@ -19,7 +19,7 @@ However, this built-in functionality has a number of limitations:
 
 1. Although back / forward functionality works in this scenario, the ability to copy and paste the "state" of which link is currently being viewed, as represented by the address bar, doesn't work.  You might be looking at page "A", but when you send the full url in the address bar to a friend, they won't see any iframe loaded.
 2. Switching back and forth between the two links causes a server request to be made, checking if there's been an update to the resource (best case scenario).  While this might not be very costly, the bigger problem is that:
-3. The iframe is reloaded each time you go back to a previously selected link, losing previous user interactions.  This can be also be quite costly for complex content that  uses rich, JS heavy libraries.
+3. The iframe is reloaded each time you go back to a previously selected link, losing previous user interactions.  This can be also be quite costly for complex content that uses rich, JS heavy libraries.
 
 "re-src" and a few other web components described here, give the developer the ability to enhance / modify the native behavior of the hyperlink / iframe partnership.  re-src "progressively enhances" the native behavior, so until the library loads, the native functionality can be used, if that is desired.
 
@@ -53,7 +53,6 @@ If there's some other (conflicting) library that looks for / acts on the  "be-pe
 
 <nav be-re-src-persistable>
     <a href="a.html" target="myIFrame">A</a>
-    <br>
     <a href="b.html" target="myIFrame">B</a>
 </nav>
 <iframe name="myIFrame"></iframe>
@@ -106,11 +105,11 @@ While this does prevent having to lose the loading of A content in order to see 
 
 The "target-caching" component affects hyperlinks with attribute "be-caching".  This attribute can also be customized.
 
-What target-caching does is it intercepts the hyperlink's click event.  The first time, it let's the link pass through normally.  After that, it blocks the link ("preventDefault"), since the iframe was already loaded.  In either case, it sets attribute "data-selected" attribute on the target iframe.
+What target-caching does is it intercepts the hyperlink's click event.  The first time, it lets the link pass through normally.  After that, it blocks the link ("preventDefault"), since the iframe was already loaded.  In either case, it sets attribute "data-selected" attribute on the target iframe.
 
 Unfortunately, if one clicks on both link A, and link B, both iframes will now have "data-selected" attribute, which means we can't use CSS to hide previously selected iFrames.
 
-The web component ["at-most-one"](https://github.com/bahrus/at-most-one) prevents multiple instances of the same attribute within its child elements:
+The web component ["at-most-one"](https://github.com/bahrus/at-most-one) prevents multiple instances of the same attribute within its (nested) child elements:
 
 ```html
 <at-most-one attribute="data-selected">
