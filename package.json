@@ -13,8 +13,9 @@
   "main": "re-src.js",
   "module": "re-src.js",
   "exports": {
-    "import": "./index.js",
-    "default": "./index.js"
+    ".": "./index.js",
+    "./re-src.js": "./re-src.js",
+    "./target-caching.js": "./target-caching.js"
   },
   "files": [
     "re-src.js",

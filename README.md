@@ -30,7 +30,7 @@ The re-src web component, by itself, only addresses issue 1 above.
 Syntax:
 
 ```html
-<re-src></re-src>
+<re-src upgrade=nav if-wants-to-be=persitable></re-src>
 ...
 
 <nav be-persistable>
@@ -45,10 +45,12 @@ One re-src element needs be present in any ShadowDOM realm where you want the if
 
 Now the address bar will update, which can be shared to others, who will see the same content load as what you last selected.
 
+The attributes shown above, "upgrade" and "if-wants-to-be" actually default to the values shown, so can optionally be dropped, perhaps if used frequently enough that it becomes obvious what it is doing.  
+
 If there's some other (conflicting) library that looks for / acts on the  "be-persistable" attribute on the nav element, you can namespace your instance:
 
 ```html
-<re-src if-wants-to-be=re-src-persistable></re-src>
+<re-src upgrade=nav if-wants-to-be=re-src-persistable></re-src>
 ...
 
 <nav be-re-src-persistable>
@@ -103,7 +105,7 @@ First, the only way to prevent reloading an iFrame, while retaining native funct
 
 While this does prevent having to lose the loading of A content in order to see B, it doesn't really solve the problem yet -- clicking on A repeatedly will cause A to reload, likewise with clicking on B.  But it is an important first step.
 
-The "target-caching" component affects hyperlinks with attribute "be-caching".  This attribute can also be customized.
+The "target-caching" component affects hyperlinks with attribute "be-caching" (by default).  These defaults can also be customized.
 
 What target-caching does is it intercepts the hyperlink's click event.  The first time, it lets the link pass through normally.  After that, it blocks the link ("preventDefault"), since the iframe was already loaded.  In either case, it sets attribute "data-selected" attribute on the target iframe.
 
@@ -121,8 +123,9 @@ The web component ["at-most-one"](https://github.com/bahrus/at-most-one) prevent
 So the entire markup, that addresses all three points above, looks like:
 
 ```html
-<re-src></re-src>
-<target-caching></target-caching>
+<re-src upgrade=nav if-wants-to-be=persistable></re-src>
+<target-caching upgrade=a if-wants-to-be=target-caching></target-caching>
+...
 <nav be-persistable='{"group":"myIFrame"}'>
     <a href="a.html" be-target-caching target="myIFrameA">A</a>
     <br>
